@@ -3,6 +3,7 @@ import 'package:isango_app/screens/home/home_screen.dart';
 import 'package:isango_app/screens/saved/saved_screen.dart';
 import 'package:isango_app/screens/settings/settings_screen.dart';
 import 'package:isango_app/screens/submit/submit_screen.dart';
+import 'package:isango_app/screens/signup/signup_screen.dart';
 
 import 'core/constants/app_routes.dart';
 import 'core/theme/app_theme.dart';
@@ -22,6 +23,7 @@ class IsangoApp extends StatelessWidget {
         AppRoutes.saved:(context) => const SavedScreen(),
         AppRoutes.submitEvent:(context) => const SubmitScreen(),
         AppRoutes.settings:(context) => const SettingsScreen(),
+        AppRoutes.signUp:(context) => const SignupScreen(),
 
 
       },
