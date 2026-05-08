@@ -4,49 +4,44 @@ import 'package:isango_app/core/theme/app_colors.dart';
 import 'package:isango_app/core/theme/app_spacing.dart';
 import 'package:isango_app/core/theme/app_text_styles.dart';
 
-class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<SignupScreen> createState() => _SignupScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
-  final _fullNameController = TextEditingController();
   
   bool _obscurePassword = true;
-  bool _obscureConfirmPassword = true;
   bool _isLoading = false;
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
-    _confirmPasswordController.dispose();
-    _fullNameController.dispose();
     super.dispose();
   }
 
-  void _handleSignup() {
+  void _handleLogin() {
     if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
       });
       
-      // TODO: Implement actual signup logic here
+      // TODO: Implement actual login logic here
       // For now, just simulate a delay and show a snackbar
       Future.delayed(const Duration(seconds: 2), () {
         setState(() {
           _isLoading = false;
         });
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Signup successful!')),
+          const SnackBar(content: Text('Login successful!')),
         );
-        // Navigate to home or verification screen
+        // Navigate to home
         Navigator.of(context).pushReplacementNamed(AppRoutes.home);
       });
     }
@@ -56,7 +51,7 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Account'),
+        title: const Text('Login'),
         elevation: 0,
       ),
       body: SingleChildScrollView(
@@ -76,40 +71,13 @@ class _SignupScreenState extends State<SignupScreen> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Sign Up', style: AppTextStyles.headline),
+                  Text('Welcome Back', style: AppTextStyles.headline),
                   const SizedBox(height: AppSpacing.xs),
                   Text(
-                    'Create a new account to get started',
+                    'Log in to your account',
                     style: AppTextStyles.bodyMuted,
                   ),
                   const SizedBox(height: AppSpacing.lg),
-                  
-                  // Username or Names Field
-                  Text('Names', style: AppTextStyles.title),
-                  const SizedBox(height: AppSpacing.xs),
-                  TextFormField(
-                    controller: _fullNameController,
-                    decoration: InputDecoration(
-                      hintText: 'Johnson Bera............',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.md,
-                        vertical: AppSpacing.md,
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your username or names';
-                      }
-                      if (value.length < 3) {
-                        return 'Username or names must be at least 3 characters';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: AppSpacing.md),
                   
                   // University Email Field
                   Text('University Email', style: AppTextStyles.title),
@@ -169,7 +137,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter a password';
+                        return 'Please enter your password';
                       }
                       if (value.length < 6) {
                         return 'Password must be at least 6 characters';
@@ -179,51 +147,34 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   const SizedBox(height: AppSpacing.md),
                   
-                  // Confirm Password Field
-                  Text('Confirm Password', style: AppTextStyles.title),
-                  const SizedBox(height: AppSpacing.xs),
-                  TextFormField(
-                    controller: _confirmPasswordController,
-                    obscureText: _obscureConfirmPassword,
-                    decoration: InputDecoration(
-                      hintText: 'Confirm your password',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.md,
-                        vertical: AppSpacing.md,
-                      ),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscureConfirmPassword
-                              ? Icons.visibility_off
-                              : Icons.visibility,
+                  // Forgot Password Link
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                      onTap: () {
+                        // TODO: Implement forgot password functionality
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Forgot password feature coming soon'),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'Forgot Password?',
+                        style: AppTextStyles.body.copyWith(
+                          color: AppColors.commandBlue,
+                          fontWeight: FontWeight.w600,
                         ),
-                        onPressed: () {
-                          setState(() {
-                            _obscureConfirmPassword = !_obscureConfirmPassword;
-                          });
-                        },
                       ),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please confirm your password';
-                      }
-                      if (value != _passwordController.text) {
-                        return 'Passwords do not match';
-                      }
-                      return null;
-                    },
                   ),
                   const SizedBox(height: AppSpacing.lg),
                   
-                  // Signup Button
+                  // Login Button
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: _isLoading ? null : _handleSignup,
+                      onPressed: _isLoading ? null : _handleLogin,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.commandBlue,
                         padding: const EdgeInsets.symmetric(
@@ -245,7 +196,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               ),
                             )
                           : Text(
-                              'Sign Up',
+                              'Log In',
                               style: AppTextStyles.title.copyWith(
                                 color: Colors.white,
                               ),
@@ -254,20 +205,20 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   const SizedBox(height: AppSpacing.md),
                   
-                  // Login Link
+                  // Signup Link
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Already have an account? ',
+                        'Don\'t have an account? ',
                         style: AppTextStyles.body,
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.of(context).pushNamed(AppRoutes.login);
+                          Navigator.of(context).pushNamed(AppRoutes.signUp);
                         },
                         child: Text(
-                          'Log In',
+                          'Sign Up',
                           style: AppTextStyles.body.copyWith(
                             color: AppColors.commandBlue,
                             fontWeight: FontWeight.w600,
